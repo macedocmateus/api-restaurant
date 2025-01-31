@@ -5,5 +5,8 @@
     "scripts": {},
     "author": "Mateus de Castro Macedo",
     "license": "ISC",
-    "description": "API para gerenciar pedidos das mesas de um restaurante"
+    "description": "API para gerenciar pedidos das mesas de um restaurante",
+    "dependencies": {
+        "express": "^4.19.2"
+    }
 }
