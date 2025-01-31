@@ -1,0 +1,9 @@
+{
+    "name": "api-restaurant",
+    "version": "1.0.0",
+    "main": "index.js",
+    "scripts": {},
+    "author": "Mateus de Castro Macedo",
+    "license": "ISC",
+    "description": "API para gerenciar pedidos das mesas de um restaurante"
+}
