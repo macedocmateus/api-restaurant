@@ -5,7 +5,16 @@ import { z } from "zod";
 class ProductController {
     async index(request: Request, response: Response, next: NextFunction) {
         try {
-            return response.json({ message: "ok" });
+            // Criando parâmetro opcional no request query
+            const { name } = request.query;
+
+            const products = await knex<ProductRepository>("products")
+                .select()
+                // Buscando esse parâmetro opcional no começo e no final da string com whereLike
+                .whereLike("name", `%${name ?? ""}%`)
+                .orderBy("name");
+
+            return response.json(products);
         } catch (error) {
             next(error);
         }
