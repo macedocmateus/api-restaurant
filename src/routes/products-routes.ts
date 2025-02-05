@@ -10,4 +10,6 @@ productsRoutes.post("/", productsController.create);
 
 productsRoutes.put("/:id", productsController.update);
 
+productsRoutes.delete("/:id", productsController.remove);
+
 export { productsRoutes };
