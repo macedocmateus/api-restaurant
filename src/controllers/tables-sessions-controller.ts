@@ -1,4 +1,5 @@
 import { Request, Response, NextFunction } from "express";
+import { AppError } from "../utils/AppError";
 import { knex } from "../database/knex";
 import { z } from "zod";
 
@@ -10,6 +11,22 @@ class TablesSessionsController {
             });
 
             const { table_id } = bodySchema.parse(request.body);
+
+            const session = await knex<TablesSessionsRepository>(
+                "tables_sessions",
+            )
+                .where({ table_id })
+                .orderBy("opened_at", "desc")
+                .first();
+
+            // Verificando se a mesa está aberta
+            if (session && !session.closed_at) {
+                throw new AppError("this table is already open");
+            }
+
+            /* Testando abertura da mesa
+            return response.json(session);
+            */
 
             await knex<TablesSessionsRepository>("tables_sessions").insert({
                 table_id,
