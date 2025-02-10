@@ -59,7 +59,32 @@ class OrdersController {
 
     async index(request: Request, response: Response, next: NextFunction) {
         try {
-            return response.json();
+            const { table_session_id } = request.params;
+            const order = await knex("orders")
+                .select(
+                    "orders.id",
+                    "orders.table_session_id",
+                    "orders.product_id",
+                    "products.name as product_name",
+                    "orders.price as order_price",
+                    "orders.quantity",
+                )
+                .join("products", "products.id", "orders.product_id")
+                .where({ table_session_id });
+
+            // Recuperando a sessão da mesa
+            const session = await knex<TablesSessionsRepository>(
+                "tables_sessions",
+            )
+                .where({ id: Number(table_session_id) })
+                .first();
+
+            // Verifica se a sessão da mesa existe
+            if (!session) {
+                throw new AppError(" table session not found");
+            }
+
+            return response.json(order);
         } catch (error) {
             next(error);
         }
