@@ -43,7 +43,13 @@ class TablesSessionsController {
         try {
             const sessions = await knex<TablesSessionsRepository>(
                 "tables_sessions",
-            ).orderBy("closed_at");
+            )
+                .select(
+                    knex.raw(
+                        "COALESCE(closed_at, 'Ainda não foi fechada!') as closed_at",
+                    ),
+                )
+                .orderBy("closed_at");
             return response.json(sessions);
         } catch (error) {
             next(error);

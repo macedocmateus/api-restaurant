@@ -7,7 +7,8 @@ export async function up(knex: Knex): Promise<void> {
             .integer("table_id")
             .notNullable()
             .references("id")
-            .inTable("tables");
+            .inTable("tables")
+            .onDelete("CASCADE");
         table.timestamp("opened_at").defaultTo(knex.fn.now());
         table.timestamp("closed_at");
     });
